@@ -135,10 +135,16 @@ def teach_home(request):
 #***********************************************************************#
 #-----------Delivery Operate(only role=teacher has these function)-------------#
 def delivery_list(request):
+    context={}
+    context['role']=request.session['role']
+    context['username'] = request.session['username']
+    context['hello']='welcome to our platfowm'
+    context['currentTime']= showTime.formatTime2()
+    context['currentTimeStamp']=showTime.transform_Timestr_To_TimeStamp(showTime.formatTime1())
+
     username = request.session['username']
     teacher = User.objects.get(username=username)
     DeliveryList = Delivery.objects.filter(teacher=teacher).order_by('-delivery_time')
-    context={}
     context['DeliveryList'] = DeliveryList
     return render(request, 'delivery_list.html', context)
 
@@ -331,10 +337,16 @@ def teach_result_report_download(request,score_id):
 
 #---list all exp results(situation=done)-----from score db
 def teach_result_list(request):
+    context={}
+    context['role']=request.session['role']
+    context['username'] = request.session['username']
+    context['hello']='welcome to our platfowm'
+    context['currentTime']= showTime.formatTime2()
+    context['currentTimeStamp']=showTime.transform_Timestr_To_TimeStamp(showTime.formatTime1())
+
     username = request.session['username']
     current_teacher = User.objects.get(username=username)
     ResultList = Score.objects.filter(scorer=current_teacher,situation='Done',result_exp_id__isnull=False).order_by('-finishedTime')
-    context = {}
     context['ResultList'] = ResultList
     return render(request, 'teach_result_list.html', context)
 
@@ -342,6 +354,13 @@ def teach_result_list(request):
 
 #equal to teach_score_list_by_exp
 def teach_score_list(request):
+    context={}
+    context['role']=request.session['role']
+    context['username'] = request.session['username']
+    context['hello']='welcome to our platfowm'
+    context['currentTime']= showTime.formatTime2()
+    context['currentTimeStamp']=showTime.transform_Timestr_To_TimeStamp(showTime.formatTime1())
+
     #default show scores by exp(distinct)
     username = request.session['username']
     t = User.objects.get(username=username)
@@ -370,13 +389,19 @@ def teach_score_list(request):
         ExpScoreDict['members']=len(e_stulist)
         ExpScoreDict['stulist']=e_stulist
         ExpScoreList.append(ExpScoreDict)
-    context = {}
     context['ExpScoreList']=ExpScoreList
     return render(request,'teach_score_list.html',context)
 
 
 #only role=teacher
 def teach_score_list_by_stu(request):
+    context={}
+    context['role']=request.session['role']
+    context['username'] = request.session['username']
+    context['hello']='welcome to our platfowm'
+    context['currentTime']= showTime.formatTime2()
+    context['currentTimeStamp']=showTime.transform_Timestr_To_TimeStamp(showTime.formatTime1())
+
     username = request.session['username']
     t = User.objects.get(username=username)
     ScoreList = Score.objects.filter(scorer=t, situation='Scored')
@@ -404,7 +429,6 @@ def teach_score_list_by_stu(request):
         StuScoreDict['exp_count']=len(s_explist)
         StuScoreDict['explist']=s_explist
         StuScoreList.append(StuScoreDict)
-    context = {}
     context['StuScoreList']=StuScoreList
     return render(request,'teach_score_list_by_stu.html',context)
 
@@ -530,7 +554,7 @@ def repo_Network_delete(request,n_id):
 
 
 def repo_public_image_list(request):
-    PublicImageList = VMImage.objects.filter(is_shared=True).order_by("-shared_time")
+    PublicImageList = VMImage.objects.filter(is_public=True).order_by("-shared_time")
     context ={}
     context['PublicImageList']=PublicImageList
     return render(request,"repo_public_image_list.html",context)
@@ -538,20 +562,32 @@ def repo_public_image_list(request):
 
 
 def repo_private_exp_list(request):
+    context={}
+    context['role']=request.session['role']
+    context['username'] = request.session['username']
+    context['hello']='welcome to our platfowm'
+    context['currentTime']= showTime.formatTime2()
+    context['currentTimeStamp']=showTime.transform_Timestr_To_TimeStamp(showTime.formatTime1())
+
     username = request.session['username']
     teacher = User.objects.get(username=username)
     PrivateExpList = Experiment.objects.filter(exp_owner=teacher).order_by('-exp_createtime')
-    context={}
     context['PrivateExpList'] = PrivateExpList
     return render(request,"repo_private_exp_list.html",context)
 
 
 
 def repo_private_image_list(request):
+    context={}
+    context['role']=request.session['role']
+    context['username'] = request.session['username']
+    context['hello']='welcome to our platfowm'
+    context['currentTime']= showTime.formatTime2()
+    context['currentTimeStamp']=showTime.transform_Timestr_To_TimeStamp(showTime.formatTime1())
+
     username = request.session['username']
     t = User.objects.get(username=username)
     PrivateImageList = VMImage.objects.filter(owner=t).order_by('-created_at')
-    context = {}
     context['PrivateImageList']=PrivateImageList
     return render(request,"repo_private_image_list.html",context)
 
@@ -1590,3 +1626,26 @@ def upload_imageFile():
 # **********************************************************************#
 #              Student submit the experiment                             #
 #***********************************************************************#
+
+
+#ly 2017.3.12#
+def repo_public_image_list(request):
+    context={}
+    context['role']=request.session['role']
+    context['username'] = request.session['username']
+    context['hello']='welcome to our platfowm'
+    context['currentTime']= showTime.formatTime2()
+    context['currentTimeStamp']=showTime.transform_Timestr_To_TimeStamp(showTime.formatTime1())
+
+    # default show exp list in public repo
+    username = request.session['username']
+    role = request.session['role']
+    if role =='teacher':
+        PublicImageList = VMImage.objects.filter(is_public='Yes').order_by('-shared_time')
+        context['PublicImageList']=PublicImageList
+    else:
+        pass
+
+    return render(request,'repo_public_image_list.html',context)
+
+

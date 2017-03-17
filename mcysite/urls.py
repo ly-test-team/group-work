@@ -20,7 +20,7 @@ from django.contrib import admin
 from Iserlab.login import *
 
 from Iserlab.home import *
-from Iserlab.views import *
+# from Iserlab.views import *
 from people.views import *
 from blog.views import *
 
@@ -57,10 +57,10 @@ urlpatterns = [
 
 
     #test
-    url(r'^index/$',index,name='index'),
-    url(r'^add/$',add,name='add'),
-    url(r'^add/(\d+)/(\d+)/$',old_add2_redirect),
-    url(r'^new_add/(\d+)/(\d+)/$',add2,name='add2'),
+    # url(r'^index/$',index,name='index'),
+    # url(r'^add/$',add,name='add'),
+    # url(r'^add/(\d+)/(\d+)/$',old_add2_redirect),
+    # url(r'^new_add/(\d+)/(\d+)/$',add2,name='add2'),
     url(r'^bloglist/$',blog_list2),
     #test book example
     url(r'^search/$',search,name='search'),#failed
